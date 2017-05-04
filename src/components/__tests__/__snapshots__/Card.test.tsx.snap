@@ -1,0 +1,8 @@
+exports[`test renders text 1`] = `
+<div
+  className="Card "
+  onClick={undefined}
+  style={undefined}>
+  MAXIMUM FLUBSTEP
+</div>
+`;
