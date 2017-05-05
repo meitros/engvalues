@@ -1,4 +1,4 @@
-[
+let values = [
   "personal autonomy",
   "rigorous design reviews",
   "great developer experience",
@@ -52,3 +52,5 @@
   "above-market compensation",
   "company has a positive impact on the world"
 ]
+
+export default values.slice(0, 20);

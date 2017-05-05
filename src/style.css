@@ -1,4 +1,15 @@
-.App {
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Avenir', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-weight: 500;
+    background: linear-gradient(45deg, #90caf9, #b0bec5);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.ValuesApp {
   text-align: center;
 }
 
