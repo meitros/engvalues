@@ -6,15 +6,6 @@ import Card from './Card';
 
 import './ShufflingCardGrid.css';
 
-/*
-  Card objects should be:
-  {
-    key: UUID,
-    text: string
-    accepted: boolean
-    rejected: boolean -- should have?
-  }
-*/
 
 class ShufflingCardGrid extends Component<any,any> {
 
@@ -24,15 +15,17 @@ class ShufflingCardGrid extends Component<any,any> {
       centered: false,
       cardIndex: _.fromPairs(
         this.props.cards.map((c: any, index: any) => [c.key, index])
-      )
+      ),
+      activeCards: this.props.cards.filter( (c: any) => c.mark >= this.props.stage - 1)
     };
     // Just for demo purposes
     window.addEventListener('click', this.shuffle);
   }
 
+
   shuffle = () => {
-    let n = this.props.cards.length;
-    let newCards = this.props.cards.slice();
+    let n = this.state.activeCards.length;
+    let newCards = this.state.activeCards.slice();
     for (let idx of _.range(n)) {
       let swapIdx = _.random(idx, n - 1);
       let [a, b] = [newCards[idx], newCards[swapIdx]];
@@ -40,15 +33,28 @@ class ShufflingCardGrid extends Component<any,any> {
       newCards[swapIdx] = a;
     }
     this.setState({
-      // centered: true,
       cardIndex: _.fromPairs(
         newCards.map((c: any, index: any) => [c.key, index])
-      )
+      ),
     });
     setTimeout(() => this.setState({ centered: false }), 400);
   }
 
+  componentWillReceiveProps(nextProps: any) {
+    const activeCards = nextProps.cards.filter( (c: any) => c.mark >= nextProps.stage - 1);
+    const updater = {activeCards: activeCards};
+
+    if (nextProps.stage != this.props.stage) {
+      updater['cardIndex'] = _.fromPairs(
+        activeCards.map((c: any, index: any) => [c.key, index])
+      );
+    }
+    this.setState(updater)
+  }
+
   render() {
+    const numSelected = this.state.activeCards.filter( (c: any) => c.mark == this.props.stage).length;
+    const locked = numSelected >= this.props.cardsNeeded[this.props.stage]
     const rowSize = Math.floor(this.props.width / this.props.itemWidth);
 
     const indexToXPos = (index: any) => {
@@ -77,7 +83,8 @@ class ShufflingCardGrid extends Component<any,any> {
         className="ShufflingCardGrid"
         >
         {
-          this.props.cards.map((_: any, index: any) => (
+
+          this.state.activeCards.map((_: any, index: any) => (
             <div
               key={index}
               className="Card fake"
@@ -91,7 +98,7 @@ class ShufflingCardGrid extends Component<any,any> {
           ))
         }
         {
-          this.props.cards.map((card: any, cardIndex: any) => {
+          this.state.activeCards.map((card: any, cardIndex: any) => {
             let index = this.state.cardIndex[card.key];
             return (
               <Card
@@ -106,6 +113,8 @@ class ShufflingCardGrid extends Component<any,any> {
                   e.stopPropagation();
                   this.props.onCardMark(card.key, 'selected');
                 }}
+                stage={this.props.stage}
+                locked={locked}
                 {...card}
               />
             );

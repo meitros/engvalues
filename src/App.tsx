@@ -4,23 +4,24 @@ import * as React from 'react';
 // Update once DefinitelyTyped includes react-redux 5.0.4
 const reactRedux = require('react-redux');
 import ShufflingCardGrid from './components/ShufflingCardGrid';
+import StageInfo from './components/StageInfo';
 
 import './App.css';
 
 const mapStateToProps = (state: any) : any => {
   return {
     stage: state.stage,
-    cards: state.cards
+    cards: state.cards,
+    cardsNeeded: state.cardsNeeded
   };
 };
 
 const mapDispatchToProps = (dispatch: any) : any => {
   return {
-    onCardMark: (key: any, mark: any) : any => {
+    onCardMark: (key: any) : any => {
       dispatch({
         type: 'TOGGLE_CARD',
-        key,
-        mark
+        key
       });
     },
     onAdvanceStage: (stage: any) : any => {
@@ -56,16 +57,9 @@ class App extends Component<any, any> {
   render() {
     const totalWidth = Math.min(this.state.windowWidth, 900);
     const cardWidth = 160;
-    const numSelected = this.props.cards.filter( (c: any) => c.mark === 'selected').length;
-    const needed = Math.floor(this.props.cards.length / 2);
     return (
       <div className="App">
-        <h1 className="instructions">
-          Select the things you value
-          the most: <span className="progress">
-            <span className="number-selected" key={numSelected}>{numSelected}</span> / {needed}
-          </span>
-        </h1>
+        <StageInfo {...this.props} />
         <ShufflingCardGrid
           width={totalWidth}
           height={this.state.windowHeight}

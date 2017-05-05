@@ -7,18 +7,3 @@
     50% { transform: scale(1.2); }
     100% { transform: scale(1.0); }
 }
-
-h1.instructions {
-    font-weight: 400;
-    font-size: 24px;
-}
-
-.progress {
-    font-weight: 500;
-}
-
-.number-selected {
-    display: inline-block;
-    animation-name: burst;
-    animation-duration: 200ms;
-}

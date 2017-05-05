@@ -10,11 +10,25 @@ class Card extends Component<any, any> {
   }
 
   render() {
+    let substyle = ''
+
+    /*
+      If the card was marked in the current stage, it should be "selected" in the UI.
+      If the maximum number of cards in a stage has been selected, it should not be
+      possible to select additional cards (but unselection should work).
+    */
+    if (this.props.mark == this.props.stage) {
+      substyle = 'selected'
+    } else if (this.props.locked) {
+      substyle = 'locked'
+    }
+
+
     return (
       <div
-        className={'Card ' + (this.props.mark || '')}
+        className={'Card ' + substyle}
         style={this.props.style}
-        onClick={this.props.onClick}
+        onClick={this.props.locked ? (e: any) => {e.stopPropagation();} : this.props.onClick}
         >
         { this.props.text }
       </div>

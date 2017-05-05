@@ -9,6 +9,10 @@
     cursor: pointer;
 }
 
+.Card.locked {
+    cursor: auto;
+}
+
 .Card:hover {
     box-shadow: 1px 1px 9px #519657; /* green 300 dark */
 }
