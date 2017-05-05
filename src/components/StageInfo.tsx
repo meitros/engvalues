@@ -1,5 +1,4 @@
-// Cleanup CSS!
-import '../App.css';
+import './StageInfo.css';
 import { Component } from 'react';
 import * as React from 'react';
 
